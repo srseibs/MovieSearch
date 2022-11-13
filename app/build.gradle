@@ -20,6 +20,14 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        // Added to keep the API_KEY out of our source control and in local.properties file.
+        // See Philip Lackner's explanation: https://youtu.be/-2ckvIzs0nU
+        // Access the API_KEY with "BUILD_CONFIG.API_KEY"
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+        buildConfigField "String", "API_KEY", "\"${properties.getProperty("API_KEY")}\""
+
     }
 
     buildTypes {
