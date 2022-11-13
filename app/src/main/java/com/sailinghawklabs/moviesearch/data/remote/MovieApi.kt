@@ -12,7 +12,7 @@ interface MovieApi {
 
     // https://www.omdbapi.com/?apikey=11112234&s=Star
 
-    @GET
+    @GET(".")
     suspend fun searchMovies(
         @Query("apikey") apiKey: String = BuildConfig.API_KEY,
         @Query("s") queryString: String,
