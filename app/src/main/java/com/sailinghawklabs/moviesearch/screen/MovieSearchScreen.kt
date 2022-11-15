@@ -57,20 +57,13 @@ fun MovieSearchScreenContent(
             CircularProgressIndicator()
         }
     }
-
-
-    
 }
 
 
 @Preview
 @Composable
 fun MovieSearchScreenContentPreview() {
-    
     MovieSearchTheme() {
-
         MovieSearchScreenContent(movies = fakeMovies, isLoading = false)
-        
     }
-    
 }

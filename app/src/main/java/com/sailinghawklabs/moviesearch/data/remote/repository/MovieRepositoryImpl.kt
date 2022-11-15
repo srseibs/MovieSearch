@@ -5,6 +5,7 @@ import com.sailinghawklabs.moviesearch.data.remote.response.toMovie
 import com.sailinghawklabs.moviesearch.domain.MovieRepository
 import com.sailinghawklabs.moviesearch.domain.model.Movie
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -15,6 +16,8 @@ class MovieRepositoryImpl @Inject constructor(
     override suspend fun searchMovies(query: String, page: Int): Result<List<Movie>> =
         withContext(Dispatchers.IO) {
             try {
+                delay(2000)
+
                 val result = api.searchMovies(queryString = query, page = page)
                 Result.success(result.Search.map { it.toMovie() })
 

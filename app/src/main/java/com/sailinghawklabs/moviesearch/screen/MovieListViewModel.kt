@@ -28,7 +28,7 @@ class MovieListViewModel @Inject constructor(
             )
         },
         requestPage = { page ->
-            repository.searchMovies(query = "Star", page = page)
+            repository.searchMovies(query = "Friends", page = page)
         },
         getNextKey = {
             state.currentPage + 1

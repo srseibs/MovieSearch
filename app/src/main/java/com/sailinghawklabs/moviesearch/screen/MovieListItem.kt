@@ -2,6 +2,9 @@ package com.sailinghawklabs.moviesearch.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -12,8 +15,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.ui.Alignment.Companion.Start
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -31,28 +38,38 @@ fun MovieListItem(
     Card(
         modifier = modifier.fillMaxWidth()
     ) {
-        Column(
-            modifier = modifier.fillMaxWidth().padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .defaultMinSize(minHeight = 200.dp)
         ) {
 
-            Text(
-                text = movie.title,
-                modifier = Modifier.wrapContentHeight(),
-                style = MaterialTheme.typography.displaySmall
-            )
-            Text(
-                text = "${movie.dateReleased} / ${movie.type}",
-                style = MaterialTheme.typography.labelLarge,
-            )
             AsyncImage(
-                alignment = Center,
-                modifier = Modifier.height(200.dp),
+                modifier = Modifier.fillMaxWidth(0.4f),
                 model = movie.posterUrl,
+                contentScale = ContentScale.FillWidth,
                 placeholder = painterResource(id = R.drawable.ic_launcher_foreground),
-                contentDescription = "poster")
+                contentDescription = "poster"
+            )
 
+            Column(
+                modifier = modifier.wrapContentHeight().fillMaxWidth().padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+
+                Text(
+                    text = movie.title,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.wrapContentHeight(),
+                    maxLines = 4,
+                    overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.headlineSmall,
+                )
+                Text(
+                    text = "${movie.dateReleased} / ${movie.type}",
+                    style = MaterialTheme.typography.labelLarge,
+                )
+            }
         }
     }
 }
