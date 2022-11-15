@@ -12,10 +12,11 @@ interface MovieApi {
 
     // https://www.omdbapi.com/?apikey=11112234&s=Star
 
-    @GET(".")
+    @GET(".") // "." used if there are no additions to BASE_URL
     suspend fun searchMovies(
         @Query("apikey") apiKey: String = BuildConfig.API_KEY,
         @Query("s") queryString: String,
+        @Query("page") page:Int = 1,
     ): MovieSearchDto
 
 
