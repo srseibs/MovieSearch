@@ -8,4 +8,7 @@ data class ScreenListState(
     val currentPage: Int = 1,
     val isAtEnd: Boolean = false,
     val error: String? = null,
+
+    val searchString: String = "",
+    val searchStringInProgress: Boolean = false,
 )

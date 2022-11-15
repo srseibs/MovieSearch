@@ -28,7 +28,7 @@ class MovieListViewModel @Inject constructor(
             )
         },
         requestPage = { page ->
-            repository.searchMovies(query = "Friends", page = page)
+            repository.searchMovies(query = state.searchString, page = page)
         },
         getNextKey = {
             state.currentPage + 1
@@ -53,6 +53,28 @@ class MovieListViewModel @Inject constructor(
         viewModelScope.launch {
             paginator.loadNextItems()
         }
+    }
+
+    fun initializeSearch() {
+        state = state.copy(
+            searchString = "",
+            searchStringInProgress = false,
+        )
+    }
+
+    fun updateSearchString(str:String) {
+        state = state.copy(
+            searchString = str,
+            searchStringInProgress = true,
+        )
+    }
+
+    fun performSearch() {
+        state = state.copy(
+            searchStringInProgress = false,
+        )
+        paginator.reset()
+        loadNextItems()
     }
 
 }
