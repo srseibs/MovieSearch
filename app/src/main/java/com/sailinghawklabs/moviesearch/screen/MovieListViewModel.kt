@@ -3,10 +3,15 @@ package com.sailinghawklabs.moviesearch.screen
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.text.htmlEncode
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sailinghawklabs.moviesearch.domain.MovieRepository
-import com.sailinghawklabs.moviesearch.screen.ScreenListEvent.*
+import com.sailinghawklabs.moviesearch.screen.ScreenListEvent.ClearError
+import com.sailinghawklabs.moviesearch.screen.ScreenListEvent.ClearSearch
+import com.sailinghawklabs.moviesearch.screen.ScreenListEvent.LoadMoreMovies
+import com.sailinghawklabs.moviesearch.screen.ScreenListEvent.PerformSearch
+import com.sailinghawklabs.moviesearch.screen.ScreenListEvent.SearchChanged
 import com.sailinghawklabs.moviesearch.util.paginator.DefaultPaginator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -29,7 +34,10 @@ class MovieListViewModel @Inject constructor(
             )
         },
         requestPage = { page ->
-            repository.searchMovies(query = state.searchString, page = page)
+            repository.searchMovies(
+                query = state.searchString.trim().htmlEncode(),
+                page = page
+            )
         },
         getNextKey = {
             state.currentPage + 1

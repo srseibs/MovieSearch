@@ -24,9 +24,13 @@ class MovieRepositoryImpl @Inject constructor(
                 // {
                 //    "Response": "False",
                 //    "Error": "Too many results."
+                //      or
+                //    "Error":"Movie not found!"
                 // }
+                // If this happens while paging, then we have reached the end. No error.
+                // If it happens on page 1 then we should propagate the error.
 
-                if (result.Error != null) {
+                if (page == 1 && result.Error != null) {
                     Result.failure(Exception(result.Error))
                 } else {
                     Result.success(result.Search?.map { it.toMovie() } ?: emptyList())
