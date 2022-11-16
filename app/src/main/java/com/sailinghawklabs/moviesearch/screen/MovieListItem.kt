@@ -1,13 +1,10 @@
 package com.sailinghawklabs.moviesearch.screen
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,8 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Center
-import androidx.compose.ui.Alignment.Companion.Start
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -49,15 +45,20 @@ fun MovieListItem(
         ) {
 
             AsyncImage(
-                modifier = Modifier.fillMaxWidth(0.4f),
+                modifier = Modifier.fillMaxWidth(0.4f).align(CenterVertically),
                 model = movie.posterUrl,
                 contentScale = ContentScale.FillWidth,
-                placeholder = painterResource(id = R.drawable.ic_launcher_foreground),
+                placeholder = painterResource(id = R.drawable.ic_baseline_hourglass_bottom_96),
+                error = painterResource(id = R.drawable.ic_baseline_theaters_96),
+                fallback = painterResource(id = R.drawable.ic_baseline_theaters_96),
                 contentDescription = "poster"
             )
 
             Column(
-                modifier = modifier.wrapContentHeight().fillMaxWidth().padding(16.dp),
+                modifier = modifier
+                    .wrapContentHeight()
+                    .fillMaxWidth()
+                    .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
 

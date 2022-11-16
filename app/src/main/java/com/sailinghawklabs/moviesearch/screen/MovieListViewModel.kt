@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sailinghawklabs.moviesearch.domain.MovieRepository
+import com.sailinghawklabs.moviesearch.screen.ScreenListEvent.*
 import com.sailinghawklabs.moviesearch.util.paginator.DefaultPaginator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -34,7 +35,11 @@ class MovieListViewModel @Inject constructor(
             state.currentPage + 1
         },
         onError = {
-            state = state.copy(error = it?.localizedMessage)
+            state = state.copy(
+                error = it?.localizedMessage,
+                isAtEnd = true,
+                isLoading = false,
+            )
         },
         onSuccess = { items, newPage ->
             state = state.copy(
@@ -45,21 +50,39 @@ class MovieListViewModel @Inject constructor(
         }
     )
 
-    init {
-        loadNextItems()
+    fun onEvent(event: ScreenListEvent) {
+        when (event) {
+            ClearError -> {
+                state = state.copy(
+                    error = null
+                )
+            }
+
+            ClearSearch -> {
+                state = state.copy(
+                    searchString = "",
+                    searchStringInProgress = false,
+                )
+            }
+
+            LoadMoreMovies -> {
+                loadNextItems()
+            }
+
+            PerformSearch -> {
+                performSearch()
+            }
+
+            is SearchChanged -> {
+                updateSearchString(event.searchString)
+            }
+        }
     }
 
     fun loadNextItems() {
         viewModelScope.launch {
             paginator.loadNextItems()
         }
-    }
-
-    fun initializeSearch() {
-        state = state.copy(
-            searchString = "",
-            searchStringInProgress = false,
-        )
     }
 
     fun updateSearchString(str:String) {
@@ -72,9 +95,13 @@ class MovieListViewModel @Inject constructor(
     fun performSearch() {
         state = state.copy(
             searchStringInProgress = false,
+            movies = emptyList()
         )
         paginator.reset()
+
         loadNextItems()
     }
+
+
 
 }

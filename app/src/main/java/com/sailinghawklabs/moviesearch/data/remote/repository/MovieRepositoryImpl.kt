@@ -19,7 +19,18 @@ class MovieRepositoryImpl @Inject constructor(
                 delay(2000)
 
                 val result = api.searchMovies(queryString = query, page = page)
-                Result.success(result.Search.map { it.toMovie() })
+
+                // The API can return this structure, without HTTP errors:
+                // {
+                //    "Response": "False",
+                //    "Error": "Too many results."
+                // }
+
+                if (result.Error != null) {
+                    Result.failure(Exception(result.Error))
+                } else {
+                    Result.success(result.Search?.map { it.toMovie() } ?: emptyList())
+                }
 
             } catch (e: Throwable) {
                 Result.failure(e)
